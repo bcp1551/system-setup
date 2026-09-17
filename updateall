@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "==> Updating system packages (DNF) ..."
+sudo dnf upgrade --refresh -y
+
+echo "==> Updating Flatpak apps ..."
+flatpak update -y
+
+echo "==> Updates complete."
+
+read -r -p "Reboot now? [Y/n]: " ans
+ans="${ans:-Y}"
+
+case "$ans" in
+  n|N|no|NO)
+    echo "Reboot skipped."
+    ;;
+  *)
+    echo "Rebooting..."
+    sudo reboot
+    ;;
+esac
